@@ -65,9 +65,7 @@ var fight = function(enemy){
                 window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
             }
         }
-
         isPlayerTurn = !isPlayerTurn;    
-        
     }  
 };
 
@@ -93,6 +91,20 @@ var startGame = function() {
     endGame();
 };
 
+var checkHighScore = function (newScore, playerName) {
+    var currentHS = localStorage.getItem("highScore");
+    // if (currentHS === null){
+    //     highScore = 0;
+    // }
+    currentHS = currentHS || 0; //truthy and falsy values
+    if (parseInt(currentHS) > newScore) {
+        window.alert("Sorry, you didn't beat the high score :(");
+    } else {
+        localStorage.setItem("highScore", newScore);
+        localStorage.setItem("highScorePlayer", playerName);
+        window.alert("Dayum dude you good. You beat the high score :O");
+    }
+}
 var endGame = function() {
     if (playerInfo.health > 0) {
         window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ".");
@@ -105,6 +117,7 @@ var endGame = function() {
     if (playAgainConfirm) {
         startGame();
     } else {
+        checkHighScore(playerInfo.money, playerInfo.name);
         window.alert("Thank you for playing Robot Gladiators! Come back soon!");
     }
 };
@@ -149,12 +162,12 @@ var getPlayerName = function() {
 var playerInfo = {
     name: getPlayerName(),
     health: 100,
-    attack: 10,
+    attack: 30,
     money: 10,
     reset: function() {
         this.health = 100;
         this.money = 10;
-        this.attack = 10;
+        this.attack = 30;
     },
     refillHealth: function() {
         if (this.money >= 7){
